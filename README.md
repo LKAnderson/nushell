@@ -18,3 +18,11 @@ There is a debate online about whether Nushell should support the POSIX standard
 I doubt it's going to change anytime soon, so we'll just work with their insistence on using
 `~/Library/Application Support/nushell` on macOS. Symlinking FTW!
 
+## Dependencies
+
+### Starship
+
+https://starship.rs/
+
+Seems like a nice tool. Cross-shell, works with nushell.
+
