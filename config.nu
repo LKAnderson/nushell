@@ -34,7 +34,6 @@ $env.JAVA_HOME = (/usr/libexec/java_home -v17)
 
 $env.PATH = $env.PATH | uniq
 
-alias ll = ls -l
 
 #
 # fnm setup
@@ -56,4 +55,10 @@ $env.PATH = ($env.PATH
     | prepend $"($env.FNM_MULTISHELL_PATH)/bin)"
 )
 
+#
+# Aliases
+#
+alias ll = ls -l
 alias nvm = fnm
+alias appopen = /usr/bin/open
+
