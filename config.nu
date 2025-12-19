@@ -34,31 +34,21 @@ $env.JAVA_HOME = (/usr/libexec/java_home -v17)
 
 $env.PATH = $env.PATH | uniq
 
-
-#
-# fnm setup
-#
-$env.PATH = ($env.PATH | prepend "~/.fnm")
-
-load-env (fnm env --shell bash
-    | lines
-    | str replace 'export ' ''
-    | str replace -a '"' ''
-    | split column "="
-    | rename name value
-    | where name != "FNM_ARCH" and name != "PATH"
-    | reduce -f {} {|it, acc| $acc | upsert $it.name $it.value }
-)
-
-$env.PATH = ($env.PATH
-    | split row (char esep)
-    | prepend $"($env.FNM_MULTISHELL_PATH)/bin)"
-)
-
 #
 # Aliases
 #
 alias ll = ls -l
-alias nvm = fnm
 alias appopen = /usr/bin/open
 
+#
+# Load env from things that set env (eg, nvm)
+#
+def --env "nvm use" [] {
+  fish -c "
+    set -x before (mktemp)
+    env | sort > $before
+    nvm use
+    env | sort | comm -13 $before -
+    rm $before
+  " | lines | split column "=" key value | transpose -i -r -d | load-env
+}
